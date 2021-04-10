@@ -1,3 +1,8 @@
+package pck;
+
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -148,16 +153,27 @@ public class Main
 		
 		byte[] decodedBytes = Base64.getDecoder().decode(encripted);
 		
+		for(int i = 0, l = decodedBytes.length; i < l; )
+			System.out.println((decodedBytes[i++] & 0xFF) + " " + (decodedBytes[i++] & 0xFF) + " " + (decodedBytes[i++] & 0xFF) + " " + (decodedBytes[i++] & 0xFF));
+		
 		System.out.println("\nDecripted code:\n");
 		
-		int index = HEADER.indexOf("?");
-		String actualHeader = HEADER.substring(0, index) + (sex.toLowerCase().equals("m") ? "male" : "female") + HEADER.substring(index + 1);
+		String designerDNA;
 		
-		System.out.print(actualHeader);
+		int index = HEADER.indexOf("?");
+		designerDNA = HEADER.substring(0, index) + (sex.toLowerCase().equals("m") ? "male" : "female") + HEADER.substring(index + 1);
 		
 		for(int i = 0, j = 0, l = GENES.length, k = decodedBytes.length; i < l && j < k; i++)
-			System.out.println("		" + GENES[i] + "={ " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " }");
+			designerDNA += "		" + GENES[i] + "={ " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " }\n";
 		
-		System.out.println("	}\n}");
+		designerDNA += "	}\n}";
+		
+		System.out.println(designerDNA);	
+		
+		StringSelection stringSelection = new StringSelection(designerDNA);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
+		
+		System.out.println("\nRuler Designer DNA has been copied to the clipboard!");
 	}
 }
