@@ -137,8 +137,7 @@ public class Main
 		
 		do
 		{
-			sex = bf.readLine();
-			sex = sex.toLowerCase();
+			sex = bf.readLine().toLowerCase();
 		}
 		while(!sex.equals("m") && !sex.equals("f"));
 			
@@ -157,7 +156,7 @@ public class Main
 		System.out.println("\nDecripted code:\n");
 		
 		int index = HEADER.indexOf("?");
-		String designerDNA = HEADER.substring(0, index) + (sex.toLowerCase().equals("m") ? "male" : "female") + HEADER.substring(index + 1);
+		String designerDNA = HEADER.substring(0, index) + (sex.equals("m") ? "male" : "female") + HEADER.substring(index + 1);
 		
 		for(int i = 0, j = 0, l = GENES.length, k = decodedBytes.length; i < l && j < k; i++)
 			designerDNA += "		" + GENES[i] + "={ " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " }\n";
