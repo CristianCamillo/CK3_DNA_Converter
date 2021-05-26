@@ -138,12 +138,13 @@ public class Main
 		do
 		{
 			sex = bf.readLine();
+			sex = sex.toLowerCase();
 		}
-		while(!sex.toLowerCase().equals("m") && !sex.toLowerCase().equals("f"));
+		while(!sex.equals("m") && !sex.equals("f"));
 			
-		System.out.println("Input character encripted code:\n");
+		System.out.print("Input character encripted code: ");
 		
-		String encripted = "";
+		String encripted;
 		
 		do
 		{
@@ -153,15 +154,10 @@ public class Main
 		
 		byte[] decodedBytes = Base64.getDecoder().decode(encripted);
 		
-		for(int i = 0, l = decodedBytes.length; i < l; )
-			System.out.println((decodedBytes[i++] & 0xFF) + " " + (decodedBytes[i++] & 0xFF) + " " + (decodedBytes[i++] & 0xFF) + " " + (decodedBytes[i++] & 0xFF));
-		
 		System.out.println("\nDecripted code:\n");
 		
-		String designerDNA;
-		
 		int index = HEADER.indexOf("?");
-		designerDNA = HEADER.substring(0, index) + (sex.toLowerCase().equals("m") ? "male" : "female") + HEADER.substring(index + 1);
+		String designerDNA = HEADER.substring(0, index) + (sex.toLowerCase().equals("m") ? "male" : "female") + HEADER.substring(index + 1);
 		
 		for(int i = 0, j = 0, l = GENES.length, k = decodedBytes.length; i < l && j < k; i++)
 			designerDNA += "		" + GENES[i] + "={ " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " " + (decodedBytes[j++] & 0xFF) + " }\n";
